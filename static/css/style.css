@@ -1,0 +1,173 @@
+body {
+  background: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+/* 默认样式，适用于PC端（大于等于1200px宽度） */
+.container {
+  width: 50%;
+  margin: 20px auto 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 10px;
+  padding-bottom: 10px;
+}
+
+.el-dialog {
+  width: 30%;
+}
+
+.image img {
+  border-radius: 4px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  padding: 5px;
+}
+
+.el-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-slot {
+  width: 100%;
+  height: 100%;
+}
+
+/* 媒体查询，适用于PAD端（768px - 1199px宽度） */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .container {
+    width: 80%;
+    border-radius: 10px;
+  }
+
+  .el-dialog {
+    width: 30%;
+  }
+}
+
+/* 媒体查询，适用于手机端（小于768px宽度） */
+@media screen and (max-width: 767px) {
+  .container {
+    width: 90%;
+    border-radius: 10px;
+  }
+
+  .el-dialog {
+    width: 80%;
+  }
+}
+
+/*大标题*/
+.h2 {
+  font-size: 24px;
+}
+
+/*button组*/
+.container .button-group {
+  width: calc(100% - 60px);
+  padding-top: 0;
+}
+
+/*上传图片*/
+.upload-demo {
+  margin: 0 auto;
+}
+
+.el-upload {
+  width: 100%;
+}
+
+.el-upload-dragger {
+  width: 100%;
+}
+
+/*被选中的API的样式*/
+.selected {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+
+/*自定义的button*/
+api-button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0 7px 7px 0;
+  transition: .1s;
+  font-weight: 500;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.imgPreview {
+  width: calc(100% - 60px);
+  padding: 30;
+  margin: 30px auto 0;
+}
+
+.imgPreview .img-pre {
+  max-width: 50%;
+  margin: 0 auto;
+  display: block;
+}
+
+.upload-success {
+  width: calc(100% - 60px);
+  padding: 30;
+  margin: 15px auto 20px;
+}
+
+.upload-error {
+  width: calc(100% - 60px);
+  padding: 30;
+  margin: 15px auto 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.over-auto {
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bg-w {
+  background-color: #fff;
+}
+
+.pagination {
+  margin: 20px 0 0px;
+  padding-bottom: 15px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.el-main {
+  padding: 0;
+}

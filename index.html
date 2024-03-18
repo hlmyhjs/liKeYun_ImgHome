@@ -1,323 +1,314 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.4/axios.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue-clipboard2/0.3.3/vue-clipboard.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/theme-chalk/index.css">
-    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/index.js"></script>
-    <style>
-        body{
-            background: #f1f1f1;
-        }
-        
-        /* 默认样式，适用于PC端（大于等于1200px宽度） */
-        .container {
-            width: 50%;
-            margin: 30px auto 0;
-            background: #fff;
-            border-radius: 10px;
-            padding-bottom: 10px;
-        }
-        
-        .el-dialog {
-            width: 30%;
-        }
-        
-        /* 媒体查询，适用于PAD端（768px - 1199px宽度） */
-        @media screen and (min-width: 768px) and (max-width: 1199px) {
-            .container {
-                width: 80%;
-                border-radius: 10px;
-            }
-            
-            .el-dialog {
-                width: 30%;
-            }
-        }
-        
-        /* 媒体查询，适用于手机端（小于768px宽度） */
-        @media screen and (max-width: 767px) {
-            .container {
-                width: 90%;
-                border-radius: 10px;
-            }
-            
-            .el-dialog {
-                width: 80%;
-            }
-        }
-        
-        /*大标题*/
-        .h2 {
-            font-size: 35px;
-            font-weight: 400;
-            text-align: center;
-            line-height: 100px;
-            margin-bottom: 10px;
-        }
-        
-        /*button组*/
-        .container .button-group {
-            width: calc(100% - 60px);
-            padding: 30px;
-            padding-top: 0;
-        }
-        
-        /*上传图片*/
-        .upload-demo {
-            width: calc(100% - 60px);
-            padding: 30;
-            margin: 0 auto;
-        }
-        
-        .el-upload {
-            width: 100%;
-        }
-        
-        .el-upload-dragger {
-            width: 100%;
-        }
-        
-        /*被选中的API的样式*/
-        .selected {
-            color: #fff;
-            background-color: #409eff;
-            border-color: #409eff;
-        }
-        
-        /*自定义的button*/
-        api-button {
-            display: inline-block;
-            line-height: 1;
-            white-space: nowrap;
-            cursor: pointer;
-            background: #fff;
-            border: 1px solid #dcdfe6;
-            color: #606266;
-            text-align: center;
-            box-sizing: border-box;
-            outline: none;
-            margin: 0 7px 7px 0;
-            transition: .1s;
-            font-weight: 500;
-            padding: 12px 20px;
-            font-size: 14px;
-            border-radius: 4px;
-        }
-        
-        .imgPreview {
-            width: calc(100% - 60px);
-            padding: 30;
-            margin: 30px auto 0;
-        }
-        
-        .imgPreview .img-pre {
-            max-width: 50%;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .upload-success {
-            width: calc(100% - 60px);
-            padding: 30;
-            margin: 15px auto 20px;
-        }
-        
-        .upload-error {
-            width: calc(100% - 60px);
-            padding: 30;
-            margin: 15px auto 20px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.4/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue-clipboard2/0.3.3/vue-clipboard.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/theme-chalk/index.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/index.js"></script>
+  <link rel="stylesheet" href="./static/css/style.css">
 </head>
+
 <body>
-    <div id="app">
-        
+  <div id="app">
+    <el-container style="height: 100vh;">
+      <el-header style="height: 50px;" class="header bg-w">
+        <div class="left">
+          <a class="h2">{{ webtitle }}</a>
+        </div>
+      </el-header>
+      <el-main>
         <div class="container">
-            
-            <!--网页标题-->
-            <title>{{ webtitle }}</title>
-            
-            <!--大标题-->
-            <p class="h2">{{ webtitle }}</p>
-            
-            <!--API接口-->
-            <div class="button-group">
-                <api-button
-                    v-for="item in apis"
-                    :key="item.api" 
-                    :data-api="item.api"
-                    @click="selectApi(item.api)"
-                    :class="{ 'selected': selectedApi === item.api }"
-                >
-                    {{ item.apiName }}
-                </api-button>
-            </div>
-            
-            <!--上传组件-->
-            <el-upload
-                class="upload-demo" 
-                :action="`./api/${selectedApi}.php`" 
-                :auto-upload="true" 
-                drag 
-                :on-success="handleSuccess"
-                :on-error="handleError"
-            >
+
+          <!--网页标题-->
+          <title>{{ webtitle }}</title>
+
+          <!--API接口-->
+          <div class="button-group">
+            <api-button v-for="item in apis" :key="item.api" :data-api="item.api" @click="selectApi(item.api)"
+              :class="{ 'selected': selectedApi === item.api }">
+              {{ item.apiName }}
+            </api-button>
+          </div>
+
+          <!--上传组件-->
+          <el-upload style="margin-top: 20px;" v-loading="loading" element-loading-text="上传中，请稍后"
+            element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 0.9)"
+            class="upload-demo" :http-request="httpRequest" :auto-upload="true" :before-upload="beforeAvatarUpload"
+            :on-error="handleError" :show-file-list="false" drag>
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            </el-upload>
-            
-            <!--图片预览-->
-            <div class="imgPreview">
-                <el-image :src="imgPreviewPath" v-if="imgPath" class="img-pre"></el-image>
-            </div>
-            
-            <!--上传成功-->
-            <div class="upload-success" v-if="imgPath">
-                <el-alert
-                    title="图片链接"
-                    type="success"
-                    :description="imgPath"
-                    show-icon>
-                </el-alert>
-            </div>
-            
-            <!--上传失败-->
-            <div class="upload-error" v-if="error">
-                <el-alert
-                    title="上传失败"
-                    type="error"
-                    :description="msg"
-                    show-icon>
-                </el-alert>
-            </div>
-        </div>
-        
-        <!--模态框-->
-        <el-dialog
-            title="上传成功" 
-            :visible.sync="dialogVisible" 
-            :before-close="handleClose">
-            <span>{{ imgPath }}</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button 
-                    v-clipboard:copy="imgPath" 
-                    v-clipboard:success="onCopySuccess" 
-                    v-clipboard:error="onCopyError">
-                    {{ copyButtonText }}
+          </el-upload>
+
+          <div class="copy-url mt-20">
+            <el-input placeholder="请先上传图片" v-model="imgPath" :disabled="true">
+              <template slot="append">
+                <el-button v-clipboard:copy="imgPath" v-clipboard:success="onCopySuccess"
+                  v-clipboard:error="onCopyError" @click="onClick(imgPath)">
+                  {{ copyButtonText }}
                 </el-button>
-            </span>
-        </el-dialog>
-    </div>
+              </template>
+            </el-input>
+          </div>
 
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                webtitle: 'liKeYun聚合图床',
-                apis: [
-                    {
-                        'api':'360',
-                        'apiName':'360移动开放平台'
-                    },
-                    {
-                        'api':'tcl',
-                        'apiName':'TCL客服'
-                    },
-                    {
-                        'api':'jd',
-                        'apiName':'京东媒体资源管理中心'
-                    },
-                    {
-                        'api':'ali',
-                        'apiName':'阿里巴巴国际站'
-                    },
-                    {
-                        'api':'weixin',
-                        'apiName':'微信永久素材库'
-                    }
-                ],
-                selectedApi: '360', // 默认选中第一个按钮
-                imgPath: false, // 上传成功的图片地址
-                imgPreviewPath: '', // 图片预览的图片地址
-                error: false, // 错误提示
-                msg: '', // 错误信息
-                dialogVisible: false, // 模态框显示状态
-                copyButtonText: '复制链接'
-            },
-            methods: {
-                
-                // 切换API
-                selectApi(api) {
-                    this.selectedApi = api;
-                },
-                
-                // 请求成功
-                handleSuccess(response, file) {
-                    
-                    console.log('请求成功', response);
-                    if(response.code == 200) {
-                        
-                        // 200状态码
-                        // 上传成功
-                        this.imgPath = response.path;
-                        this.imgPreviewPath = response.path;
-                        
-                        // 对微信永久素材库输出的链接进行特殊处理
-                        if (response.path.includes("qpic.cn")) {
-                            
-                            this.imgPreviewPath = './api/imgbrige.php?url=' + response.path;
-                        }
+          <div class="img-list mt-20">
+            <el-row :gutter="10" class="row">
+              <el-col class="col" :xs="12" :sm="12" :md="8" :lg="6" v-for="(upload, index) in list" :key="index">
+                <el-image :src="upload.url" class="image" :preview-src-list="list.map(item => item.url)" lazy>
+                  <div slot="error" class="image-slot">
+                    <el-image src="./static/img/img-err.png" />
+                  </div>
+                </el-image>
+              </el-col>
+            </el-row>
+          </div>
 
-                        // 显示图片链接
-                        this.copyButtonText = '复制链接'
-                        this.dialogVisible = true;
-                    }else {
-                        
-                        // 其它状态码
-                        // 上传失败
-                        this.imgPath = false;
-                        this.error = true;
-                        this.msg = response.msg;
+          <div class="pagination text-center over-auto" v-show="list.length > 0">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+              :current-page="currentPage" :page-sizes="[4, 8, 12]" :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
+        </div>
+      </el-main>
+      <!-- <el-footer class="text-center"></el-footer> -->
+    </el-container>
+  </div>
+
+  <script>
+    // import imgErr from './static/img/img-err.png'
+    new Vue({
+      el: '#app',
+      data: {
+        webtitle: 'liKeYun聚合图床',
+        apis: [
+          {
+            'api': 'tcl',
+            'apiName': 'TCL客服'
+          },
+          {
+            'api': '360',
+            'apiName': '360移动开放平台'
+          },
+          {
+            'api': 'jd',
+            'apiName': '京东媒体资源管理中心'
+          },
+          {
+            'api': 'ali',
+            'apiName': '阿里巴巴国际站'
+          },
+          {
+            'api': 'weixin',
+            'apiName': '微信永久素材库'
+          }
+        ],
+        selectedApi: 'tcl', // 默认选中第一个按钮
+        imgPath: '', // 上传成功的图片地址
+        imgPreviewPath: '', // 图片预览的图片地址
+        copyButtonText: '复制链接',
+
+        list: [],
+        total: 0,
+        totalPages: 0,
+        currentPage: 1,
+        pageSize: 8,
+        loading: false,
+      },
+
+      created() {
+        this.getUploadHistory()
+      },
+      methods: {
+        // 切换API
+        selectApi(api) {
+          this.selectedApi = api;
+        },
+
+        // 上传之前判断图片是否已存在
+        beforeAvatarUpload(file) {
+          this.loading = true
+          const { type, size } = file
+          const fileTypes = ['image/jpeg', 'image/png', 'image/gif']
+          const isJPG = fileTypes.includes(type)
+          const isLt2M = size / 1024 / 1024 < 2;
+
+          if (!isJPG) {
+            this.$message.error('上传图片只能是 JPG/PNG/GIF 格式!');
+            this.loading = false
+            return false
+          }
+          if (!isLt2M) {
+            this.$message.error('上传图片大小不能超过 2MB!');
+            this.loading = false
+            return false
+          }
+          return isJPG && isLt2M
+        },
+
+        async isCanUpload(name) {
+          const res = await fetch(`./api/files.php?name=${name}`)
+          const data = await res.json()
+          return data.canUpload
+        },
+
+        httpRequest(uploadObj) {
+          const { name } = uploadObj.file
+          fetch(`./api/files.php?name=${name}`).then((res) => res.json()).then(res => {
+            if (res.canUpload) {
+              this.imgPath = ''
+              this.copyButtonText = '复制链接'
+              const formData = new FormData()
+              formData.append('file', uploadObj.file)
+              fetch(`./api/${this.selectedApi}.php`, { // 替换为你的保存上传历史记录的接口地址
+                method: 'POST',
+                body: formData
+              })
+                .then(res => {
+                  res.json().then(response => {
+                    if (response.code == 200) {
+                      // 200状态码
+                      // 上传成功
+                      this.imgPath = response.path;
+                      this.imgPreviewPath = response.path;
+                      this.saveUploadHistory(response.path, name);
+                      // 对微信永久素材库输出的链接进行特殊处理
+                      if (response.path.includes("qpic.cn")) {
+                        this.imgPreviewPath = './api/imgbrige.php?url=' + response.path;
+                      }
+
+                      // 显示图片链接
+                      this.copyButtonText = '复制链接'
+                      this.dialogVisible = true;
+                    } else if (response.code === 201) {
+                      // TODO: 图片上传接口失效问题处理
+                      this.$message.warning(response.msg)
+                    } else {
+                      // 其它状态码
+                      // 上传失败
+                      this.$message.error(response.msg)
                     }
-                },
-                
-                // 后端服务发生错误
-                handleError(err, file) {
-                    
-                    console.error('上传失败', err);
-                    this.imgPath = false;
-                    this.error = true;
-                    this.msg = this.selectedApi + ".php" + "服务器发生错误！";
-                },
-                
-                // 关闭模态框
-                handleClose(done) {
-                    this.$confirm('确认关闭？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {});
-                },
-                
-                // 复制成功
-                onCopySuccess: function(e) {
-                  
-                    // 复制成功
-                    this.copyButtonText = '已复制'
-                },
-                
-                // 复制失败
-                onCopyError: function(e) {
-                    
-                    // 复制失败
-                    this.copyButtonText = '复制失败'
-                },
+                    this.loading = false
+                    this.imgPath = '';
+                  })
+                })
+                .catch(error => {
+                  console.error('Error saving upload history:', error);
+                });
+            } else {
+              this.loading = false
+              this.$message.warning(res.msg)
+            }
+          })
+        },
+
+        // 后端服务发生错误
+        handleError(err, file) {
+          console.error('上传失败', err);
+          this.imgPath = '';
+          this.$message.error(this.selectedApi + ".php" + "服务器发生错误！")
+        },
+
+        onClick(path) {
+          if (!path) {
+            this.$notify({
+              title: '提示',
+              message: '请先上传图片',
+              type: 'warning'
+            });
+          }
+        },
+
+        // 复制成功
+        onCopySuccess: function (e) {
+          // 复制成功
+          this.copyButtonText = '复制成功'
+        },
+
+        // 复制失败
+        onCopyError: function (e) {
+
+          // 复制失败
+          this.copyButtonText = '复制失败'
+        },
+        // 保存上传历史记录
+        saveUploadHistory(url, name) {
+          fetch('./api/files.php', { // 替换为你的保存上传历史记录的接口地址
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
             },
-        });
-    </script>
+            body: JSON.stringify({ url, name })
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('保存失败');
+              }
+              response.json().then((res) => {
+                const msgType = {
+                  200: 'success',
+                  201: 'warning',
+                  400: 'danger',
+                  500: 'danger'
+                }
+                // 上传成功后重新获取上传历史记录，以更新界面
+                res.code === 200 && this.getUploadHistory();
+                this.$message({
+                  showClose: true,
+                  message: res.msg,
+                  type: msgType[res.code]
+                });
+              }).catch((err) => {
+                // console.log(err);
+              }).finally(() => {
+                this.loading = false
+              })
+            })
+            .catch(error => {
+              console.error('Error saving upload history:', error);
+            });
+        },
+
+        // 获取上传历史记录
+        getUploadHistory() {
+          fetch(`./api/files.php?page=${this.currentPage}&pageSize=${this.pageSize}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to fetch upload history');
+              }
+              return response.json();
+            })
+            .then(data => {
+              this.list = data.list;
+              this.total = data.total;
+              this.totalPages = data.totalPages;
+              this.currentPage = data.currentPage;
+            })
+            .catch(error => {
+              console.error('Error fetching upload history:', error);
+            })
+        },
+        // 处理分页变化事件
+        handleCurrentChange(page) {
+          // 如果当前页已经加载过数据，则不再重新加载
+          if (page === this.currentPage) return;
+          this.currentPage = page
+          // 否则重新获取指定页数的上传历史记录
+          this.getUploadHistory();
+        },
+        handleSizeChange(size) {
+          if (size === this.pageSize) return;
+          this.pageSize = size
+          this.currentPage = 1
+          this.getUploadHistory();
+        }
+      },
+    });
+  </script>
 </body>
+
 </html>

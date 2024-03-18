@@ -60,6 +60,9 @@
                 // 图片链接
                 $imgUrl = substr(json_decode($uploadimg, true)['data'], 0, strrpos(json_decode($uploadimg, true)['data'], "?e"));
                 
+                if (substr($imgUrl, 0, 8) !== 'https://') {
+                  $imgUrl = str_replace('http://', 'https://', $imgUrl);
+                }
                 // 上传结果
                 $result = array(
                     "code" => 200,
@@ -97,5 +100,3 @@
     
     // 输出JSON
     echo json_encode($result, true);
-    
-?>
