@@ -191,9 +191,9 @@
                       // 其它状态码
                       // 上传失败
                       this.$message.error(response.msg)
+                      this.loading = false
+                      this.imgPath = '';
                     }
-                    this.loading = false
-                    this.imgPath = '';
                   })
                 })
                 .catch(error => {
