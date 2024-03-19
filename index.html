@@ -130,7 +130,9 @@
       },
       computed: {
         layout() {
-          return this.isMobile ? 'prev, pager, next' : 'total, sizes, prev, pager, next, jumper'
+          const ua = navigator.userAgent.toLowerCase();
+          const isMobileDevice = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(ua);
+          return this.isMobile || isMobileDevice ? 'prev, pager, next' : 'total, sizes, prev, pager, next, jumper'
         }
       },
       methods: {
