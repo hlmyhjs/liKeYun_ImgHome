@@ -69,8 +69,8 @@
 
           <div class="pagination text-center over-auto" v-show="list.length > 0">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :current-page="currentPage" :page-sizes="[4, 8, 12]" :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper" :total="total">
+              :current-page="currentPage" :page-sizes="[4, 8, 12]" :page-size="pageSize" :layout="layout"
+              :total="total">
             </el-pagination>
           </div>
         </div>
@@ -118,10 +118,20 @@
         currentPage: 1,
         pageSize: 8,
         loading: false,
+        isMobile: false
       },
 
       created() {
         this.getUploadHistory()
+        window.addEventListener('resize', this.checkMobile)
+      },
+      destroyed() {
+        window.removeEventListener('resize', this.checkMobile)
+      },
+      computed: {
+        layout() {
+          return this.isMobile ? 'prev, pager, next' : 'total, sizes, prev, pager, next, jumper'
+        }
       },
       methods: {
         // 切换API
@@ -148,12 +158,6 @@
             return false
           }
           return isJPG && isLt2M
-        },
-
-        async isCanUpload(name) {
-          const res = await fetch(`./api/files.php?name=${name}`)
-          const data = await res.json()
-          return data.canUpload
         },
 
         httpRequest(uploadObj) {
@@ -305,6 +309,9 @@
           this.pageSize = size
           this.currentPage = 1
           this.getUploadHistory();
+        },
+        checkMobile() {
+          this.isMobile = window.innerHeight < 767
         }
       },
     });
